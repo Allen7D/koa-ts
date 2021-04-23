@@ -1,0 +1,44 @@
+{
+  "name": "koa-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node src/app.ts",
+    "dev:build": "tsc -w"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "basic-auth": "^2.0.1",
+    "bcryptjs": "^2.4.3",
+    "cross-env": "^6.0.0",
+    "jsonwebtoken": "^8.4.0",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
+    "lodash": "^4.17.11",
+    "mysql2": "^1.6.5",
+    "npm-check": "^5.9.0",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.6.2",
+    "sequelize-typescript": "^2.1.0",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "@types/basic-auth": "^1.1.3",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/koa": "^2.13.1",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-router": "^7.4.1",
+    "@types/koa2-cors": "^2.0.1",
+    "@types/lodash": "^4.14.168",
+    "@types/require-directory": "^2.1.1",
+    "@types/validator": "^13.1.3",
+    "prettier": "^2.2.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  }
+}
