@@ -5,7 +5,7 @@ import Koa from 'Koa'
 import parser from 'koa-bodyparser'
 import { Sequelize } from 'sequelize-typescript'
 
-import { catchError } from '../middleware/exception'
+import { catchError } from './middleware/exception'
 
 
 class InitManager {
@@ -26,8 +26,8 @@ class InitManager {
     this.app = app
     this.app.use(parser())
     this.loadConfig()
-    await this.connectDB(false)
-    this.loadHttpException()
+    await this.connectDB()
+    this.handleError()
     this.initLoadRouters()
   }
 
@@ -54,16 +54,15 @@ class InitManager {
   /**
    *  载入所有自定义异常
    */
-  static loadHttpException() {
-    (global as any).errs = require('./http-exception')
+  static handleError() {
+    (global as any).errs = require('./exception')
     this.app.use(catchError)
   }
 
   /**
    * 连接数据库
-   * @param force {Boolean} 是否强制删除后重建表
    */
-  static async connectDB(force: boolean = false) {
+  static async connectDB() {
     const UserModel = require('../app/model/book').default
     const BookModel = require('../app/model/user').default
     const { MusicModel, SentenceModel, MovieModel } = require('../app/model/classic')
@@ -72,12 +71,12 @@ class InitManager {
     const HotBookModel = require('../app/model/hot-book').default
     const CommentModel = require('../app/model/comment').default
 
-    const { dbName, host, port, user, password } = (global as any).config.database
-    const sequelize = new Sequelize(dbName, user, password, {
+    const { dbName, host, port, username, password, force, logging } = (global as any).config.database
+    const sequelize = new Sequelize(dbName, username, password, {
       dialect: 'mysql',
       host,
       port,
-      logging: true,  // 打印 ORM所执行的 SQL语句
+      logging,
       timezone: '+08:00', // 设置时区
       define: {
         timestamps: true,

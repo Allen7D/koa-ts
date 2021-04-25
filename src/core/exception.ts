@@ -6,7 +6,7 @@ enum SuccessTypes {
 }
 
 // [常见的HTTP状态码](https://www.jianshu.com/p/369db1ba04ea)
-export class HttpException extends Error {
+export class APIException extends Error {
   public code: number
   public msg: string | Array<string>
   public errorCode: number
@@ -31,7 +31,7 @@ export class HttpException extends Error {
 
 
 // 请求成功
-export class Success extends HttpException {
+export class Success extends APIException {
   public data: object | undefined
 
   constructor(data?: object, errorCode?: number, msg?: string, code?: number) {
@@ -56,7 +56,7 @@ export class Success extends HttpException {
 }
 
 // 资源未找到
-export class NotFound extends HttpException {
+export class NotFound extends APIException {
   constructor(msg?: string, errorCode?: number) {
     super()
     this.code = 404
@@ -66,7 +66,7 @@ export class NotFound extends HttpException {
 }
 
 // 登录失败(等同于授权失败)
-export class AuthFailed extends HttpException {
+export class AuthFailed extends APIException {
   constructor(msg?: string, errorCode?: number) {
     super()
     this.code = 401
@@ -76,7 +76,7 @@ export class AuthFailed extends HttpException {
 }
 
 // 禁止访问
-export class Forbbiden extends HttpException {
+export class Forbbiden extends APIException {
   constructor(msg?: string, errorCode?: number) {
     super()
     this.code = 403
@@ -86,7 +86,7 @@ export class Forbbiden extends HttpException {
 }
 
 // 参数错误
-export class ParameterException extends HttpException {
+export class ParameterException extends APIException {
   constructor(msg?: string | Array<string>, errorCode?: number) {
     super()
     this.code = 400
@@ -96,7 +96,7 @@ export class ParameterException extends HttpException {
 }
 
 // 重复错误
-export class RepeatException extends HttpException {
+export class RepeatException extends APIException {
   constructor(msg?: string | Array<string>, errorCode?: number) {
     super()
     this.code = 400

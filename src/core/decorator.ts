@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import Router, { IMiddleware } from 'koa-router'
 
-import Auth from '../middleware/auth'
+import Auth from './middleware/auth'
 
 /**
  * HTTP 请求方法

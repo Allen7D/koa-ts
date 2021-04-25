@@ -1,13 +1,15 @@
 export default {
   environment: 'dev',
   // environment: 'prod',
-  port: 3000, // 端口号
+  port: 3000,           // 端口号
   database: {
     dbName: '**dbName**',   // 数据库名
     host: 'localhost',
     port: 3306,
-    user: '**root**',       // 账号
+    username: '**root**',   // 账号
     password: '**123456**', // 密码
+    force: false,       // 是否强制删除后重建表
+    logging: true,      // 打印 ORM所执行的 SQL语句
   },
   security: {
     secretKey: 'But you, Lord , are a shield around me, my glory, the One who lifts my head high.',

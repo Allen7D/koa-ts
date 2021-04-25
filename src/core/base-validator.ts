@@ -3,7 +3,7 @@ import { RouterContext } from 'koa-router'
 
 import {
   ParameterException,
-} from './http-exception'
+} from './exception'
 
 import _ from 'lodash'
 

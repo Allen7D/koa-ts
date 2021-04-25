@@ -2,8 +2,8 @@ import Router, { IMiddleware, RouterContext } from 'koa-router'
 import { Next } from 'koa'
 import basicAuth, { BasicAuthResult } from 'basic-auth'
 
-import { verifyToken } from '../core/util'
-import { isInScope } from '../app/lib/scope'
+import { verifyToken } from '../util'
+import { isInScope } from '../../app/lib/scope'
 
 export default class Auth {
   // 设置属性
