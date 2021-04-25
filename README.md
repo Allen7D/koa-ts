@@ -19,10 +19,14 @@ QQ交流群:聊天、斗图、学习、交流，伸手党勿进
   </tr>
   <tr>
     <td>
-    <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=ee34348c8d177a4218594598de6c3fb404861a1c7a7091cd9f4384e6dcd6ea32"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="葬爱代码家族群" title="葬爱代码家族群"></a>
+      <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=ee34348c8d177a4218594598de6c3fb404861a1c7a7091cd9f4384e6dcd6ea32">
+        <img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="葬爱代码家族群" title="葬爱代码家族群">
+      </a>
     </td>
     <td>
-    <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=184ed5a00c7f903271f8d55beb814b7c9779347e114e2db51db7962bf9d016de"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="林间有风团队官方交流" title="林间有风团队官方交流"></a>
+      <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=184ed5a00c7f903271f8d55beb814b7c9779347e114e2db51db7962bf9d016de">
+        <img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="林间有风团队官方交流" title="林间有风团队官方交流">
+      </a>
     </td>
   </tr>
   <tr>
@@ -66,8 +70,6 @@ mysql> source /**/../**/island.sql; # 绝对路径下的sql文件
 ```
 .
 ├── app.ts              // 项目入口文件
-├── config
-│   └── index.ts
 ├── core                // 项目核心代码
 │   ├── init.ts             // Koa初始化配置
 │   ├── base-validator.ts   // 校验方法的基类
@@ -78,7 +80,11 @@ mysql> source /**/../**/island.sql; # 绝对路径下的sql文件
 ├── middleware          // 中间件
 │   ├── auth.ts             // 权限控制
 │   └── exception.ts        // 异常统一处理
-├── app
+├── config              // 配置文件
+│   └── index.ts
+├── types               // Typescript自定义类型
+│   └── index.ts
+└──  app
     ├── api
     │   └── v1          // 所有API接口(v1版本)
     │       ├── book.ts     // 书籍API接口
@@ -101,12 +107,10 @@ mysql> source /**/../**/island.sql; # 绝对路径下的sql文件
     │   ├── hot-book.ts     // 热门书籍表
     │   └── user.ts         // 用户表
     ├── service          // Service层
-│   │   ├── login-verify.ts // 登录相关校验服务
-│   │   └── wx-token.ts     // 微信登录相关服务
-│   └── validator       // 参数校验层
-│       └── index.ts    
-└── types               // Typescript自定义类型
-    └── index.ts
+    │   ├── login-verify.ts // 登录相关校验服务
+    │   └── wx-token.ts     // 微信登录相关服务
+    └── validator       // 参数校验层
+        └── index.ts    
 ```
 
 ## 部分示例代码
