@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 
 import { DecodeToken } from '../types'
 
-export function findMembers (instance: any, {
+export function findMembers(instance: any, {
   prefix,
   specifiedType,
   filter,
@@ -49,7 +49,7 @@ export function findMembers (instance: any, {
  * @param scope {String} 用户权限
  * @returns {String} token
  */
-export function generateToken (uid: number, scope: string): string {
+export function generateToken(uid: number, scope: string): string {
   const { secretKey, expiresIn } = (global as any).config.security
   const token = jwt.sign({
     uid,
@@ -65,7 +65,7 @@ export function generateToken (uid: number, scope: string): string {
  * @param token {String} 登录令牌
  * @returns {DecodeToken} token解码信息
  */
-export function verifyToken (token: string): DecodeToken {
+export function verifyToken(token: string): DecodeToken {
   const { secretKey } = (global as any).config.security
   try {
     // 用户ID, 用户权限, 创建时间, 有效期

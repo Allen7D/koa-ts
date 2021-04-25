@@ -34,7 +34,7 @@ export default class FavorModel extends BaseModel<FavorModel> {
     /**
      * 确定收藏（喜欢like）
      */
-    this.abortRepeat({
+    FavorModel.abortRepeat({
       where: {
         art_id,
         type,

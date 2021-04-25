@@ -1,5 +1,3 @@
-import axios from 'axios'
-import util from 'util'
 import { Table, Column, DataType } from 'sequelize-typescript'
 import { BaseModel } from '../../core/db'
 
