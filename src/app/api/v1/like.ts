@@ -1,13 +1,9 @@
-import Router, { RouterContext } from 'koa-router'
+import { RouterContext } from 'koa-router'
 import { api, auth } from '../../../core/decorator'
 import FavorModel from '../../model/favor'
 import { LikeValidator } from '../../validator'
 
-const router = new Router({
-  prefix: '/v1/like'
-})
-
-@api.controller(router)
+@api.controller('/v1/like')
 class LikeController {
   @api.post('/confirm')
   @auth.login_required
@@ -33,5 +29,3 @@ class LikeController {
     throw new (global as any).errs.Success()
   }
 }
-
-export default router

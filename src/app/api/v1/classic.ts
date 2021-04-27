@@ -1,4 +1,4 @@
-import Router, { RouterContext } from 'koa-router'
+import { RouterContext } from 'koa-router'
 
 import { PositiveIntegerValidator, ClassicValidator } from '../../validator'
 import { api, auth } from '../../../core/decorator'
@@ -6,12 +6,8 @@ import FlowModel from '../../model/flow'
 import { ArtModel } from '../../model/art'
 import FavorModel from '../../model/favor'
 
-const router = new Router({
-  prefix: '/v1/classic',
-})
 
-
-@api.controller(router)
+@api.controller('/v1/classic')
 class ClassicController {
   /**
    * 获取最新期间
@@ -127,5 +123,3 @@ class ClassicController {
   }
 
 }
-
-export default router

@@ -1,14 +1,10 @@
-import Router, { RouterContext } from 'koa-router'
+import { RouterContext } from 'koa-router'
 
 import UserModel from '../../model/user'
 import { RegisterValidator } from '../../validator'
 import { api, auth } from '../../../core/decorator'
 
-const router = new Router({
-  prefix: '/v1/user',
-})
-
-@api.controller(router)
+@api.controller('/v1/user')
 class UserController {
 
   /**
@@ -47,4 +43,3 @@ class UserController {
   }
 }
 
-export default router

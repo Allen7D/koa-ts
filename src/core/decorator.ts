@@ -19,18 +19,15 @@ enum Methods {
   delete = 'delete',
 }
 
+export const routerList: Router[] = []
 
 /**
  * 将requestDecorator装饰的视图函数和对应的路由，增加到当前router中
  *
- * @param {Router} router 路由实例(有prefix属性)
+ * @param {String} prefix 路由前缀
  * @example
  * ```js
- * const router = new Router({
- *  prefix: '/v1/user',
- * })
- *
- * api.controller(router)
+ * api.controller('/v1/user')
  * class UserController {
  *  @api.get('/')
  *  @auth.login_required
@@ -40,7 +37,13 @@ enum Methods {
  * }
  * ```
  */
-function controller(router: Router) {
+function controller(prefix: string) {
+  // 新增路由
+  const router = new Router({
+    prefix,
+  })
+  routerList.push(router)
+
   return function(target: new (...args: any[]) => any) {
     for (let propertyKey of Object.getOwnPropertyNames(target.prototype)) {
       // propertyKey包含constructor字段

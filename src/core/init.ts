@@ -28,7 +28,7 @@ class InitManager {
     this.loadConfig()
     await this.connectDB()
     this.handleError()
-    this.initLoadRouters()
+    this.initLoadRouters('src/app/api/v1')
   }
 
   static loadConfig(path = '') {
@@ -38,17 +38,23 @@ class InitManager {
 
   /**
    * 批量载入路由
+   *
+   * @param routerPathList 路由所在目录列表 cms、v1、v2
    */
-  static initLoadRouters() {
-    fs.readdirSync(`${process.cwd()}/src/app/api/v1`)
-      .filter((file: string) => {
-        return (file.indexOf('.') !== 0) && (file.slice(-3) === '.ts')
-      })
-      .forEach((file: string) => {
-        const filePath = path.join(`${process.cwd()}/src/app/api/v1`, file)
-        const router = require(filePath).default
-        this.app.use(router.routes())
-      })
+  static initLoadRouters(...routerPathList: string[]) {
+    // 载入
+    routerPathList.forEach(routerPath => {
+      fs.readdirSync(`${process.cwd()}/${routerPath}`)
+        .forEach((file: string) => {
+          if ((file.indexOf('.') !== 0) && (file.slice(-3) === '.ts')) {
+            const filePath = path.join(`${process.cwd()}/${routerPath}`, file)
+            require(filePath)
+          }
+        })
+    })
+    const { routerList } = require('./decorator')
+    // @ts-ignore
+    routerList.forEach(router => this.app.use(router.routes()))
   }
 
   /**

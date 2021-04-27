@@ -1,4 +1,4 @@
-import Router, { RouterContext } from 'koa-router'
+import { RouterContext } from 'koa-router'
 import { Next } from 'koa'
 
 import { api, auth } from '../../../core/decorator'
@@ -7,13 +7,8 @@ import { AddShortCommentValidator, PositiveIntegerValidator, SearchValidator } f
 import HotBookModel from '../../model/hot-book'
 import CommentModel from '../../model/comment'
 
-const router = new Router({
-  prefix: '/v1/book',
-})
-
-@api.controller(router)
+@api.controller('/v1/book')
 class BookController {
-
   /**
    * 获取书籍详情
    * @param id {Number} 书籍ID
@@ -122,4 +117,3 @@ class BookController {
 
 }
 
-export default router

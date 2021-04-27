@@ -5,11 +5,7 @@ import { verifyToken } from '../../../core/util'
 import LoginVerifyService from '../../service/login-verify'
 import { api } from '../../../core/decorator'
 
-const router = new Router({
-  prefix: '/v1/token',
-})
-
-@api.controller(router)
+@api.controller('/v1/token')
 class ClassicController {
 
   /**
@@ -41,5 +37,3 @@ class ClassicController {
     throw new (global as any).errs.Success(decode)
   }
 }
-
-export default router
