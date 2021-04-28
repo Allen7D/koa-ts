@@ -27,6 +27,11 @@ class UserScope extends Scope {
 class AdminScope extends Scope {
   constructor() {
     super()
+    this.allowApi = this.allowApi.concat(
+      ['cms.user+getUser'],
+    )
+    this.allowModule = []
+    this.forbidden = []
 
   }
 }

@@ -28,7 +28,7 @@ class InitManager {
     this.loadConfig()
     await this.connectDB()
     this.handleError()
-    this.initLoadRouters('src/app/api/v1')
+    this.initLoadRouters('src/app/api/v1', 'src/app/api/cms')
   }
 
   static loadConfig(path = '') {
