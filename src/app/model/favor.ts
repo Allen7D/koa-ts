@@ -41,17 +41,24 @@ export default class FavorModel extends BaseModel<FavorModel> {
         uid,
       },
     })
-    // 事务（数据一致性）
-
   }
 
+  /**
+   * 取消收藏（不喜欢dislike）
+   */
   static async cancel(art_id: number, type: number, uid: number) {
-    /**
-     * 取消收藏（不喜欢dislike）
-     */
-
+    FavorModel.abortRepeat({
+      where: {
+        art_id,
+        type,
+        uid,
+      },
+    })
   }
 
+  /**
+   * 是否用户喜欢
+   */
   static async isUserLike(art_id: number, type: number, uid: number): Promise<boolean> {
     const favor = await FavorModel.findOne({
       where: {
@@ -63,10 +70,10 @@ export default class FavorModel extends BaseModel<FavorModel> {
     return favor ? true : false
   }
 
+  /**
+   * 获取用户所有的收藏(非书籍)
+   */
   static async getMyClassicFavors(uid: number) {
-    /**
-     * 获取用户所有的收藏(非书籍)
-     */
     const arts = await FavorModel.findAll({
       where: {
         uid,
@@ -82,10 +89,10 @@ export default class FavorModel extends BaseModel<FavorModel> {
     return await ArtCollection.getList(arts)
   }
 
-  static async getBookFavors(uid: number, book_id: number) {
-    /**
-     * 获取用户
-     */
+  /**
+   * 获取书籍的点赞情况和用户是否点赞
+   */
+  static async getBookFavor(uid: number, book_id: number) {
     const favorNums = await FavorModel.count({
       where: {
         art_id: book_id,

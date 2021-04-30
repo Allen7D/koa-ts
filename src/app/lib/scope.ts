@@ -1,3 +1,9 @@
+/**
+ * 权限处理的优先级: forbidden > allowApi > allowModule
+ * 如果 endpoint 在 forbidden 中，则拦截不让该请求通过
+ * 如果 endpoint 在 allowApi 中，则允许该请求通过
+ * 如果 prefix 在 allowModule 中，则允许该请求通过
+ */
 abstract class Scope {
   public allowApi: Array<string>
   public allowModule: Array<string>
@@ -15,7 +21,10 @@ class UserScope extends Scope {
     super()
     this.allowApi = this.allowApi.concat(
       ['v1.user+getUser'],
-      ['v1.classic+getLatest', 'v1.classic+getNext', 'v1.classic+getPrev', 'v1.classic+getFavor'],
+      [
+        'v1.classic+getLatest', 'v1.classic+getNext', 'v1.classic+getPrev',
+        'v1.classic+getDetail', 'v1.classic+getFavor', 'v1.classic+getMyClassicFavors',
+      ],
       ['v1.book+getShortComment', 'v1.book+getFavorBookCount'],
       ['v1.like+confirmLike', 'v1.like+cancelLike'],
     )

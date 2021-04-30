@@ -6,7 +6,6 @@ import { api, auth } from '../../../core/decorator'
 
 @api.controller('/v1/user')
 class UserController {
-
   /**
    * 获取用户信息
    * @returns 用户信息

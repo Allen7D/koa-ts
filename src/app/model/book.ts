@@ -1,6 +1,5 @@
 import axios from 'axios'
 import util from 'util'
-import 'egg'
 import { Table, Column, DataType } from 'sequelize-typescript'
 import { BaseModel } from '../../core/db'
 import FavorModel from './favor'

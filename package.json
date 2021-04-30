@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node src/app.ts",
+    "dev": "nodemon --watch src -e ts --exec ts-node src/app.ts",
     "dev:build": "tsc -w"
   },
   "author": "",
@@ -20,7 +20,7 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "lodash": "^4.17.11",
-    "mysql2": "^1.6.5",
+    "mysql2": "^2.2.5",
     "npm-check": "^5.9.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.6.2",

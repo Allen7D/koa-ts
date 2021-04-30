@@ -1,3 +1,10 @@
+/**
+ * Lin-Validator
+ * 作者：7七月
+ * 微信公众号：林间有风
+ * 地址: https://github.com/TaleLin/lin-cms-koa-core
+ */
+
 import validator from 'validator'
 import { RouterContext } from 'koa-router'
 

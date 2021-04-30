@@ -22,7 +22,6 @@ export default class Auth {
         // 如何判断「公开API」和「非公开API」
         this.ctx = ctx
         this.routerName = routerName
-        const { endpoint } = this // E.g: endpoint 为 v1.classic+getLatest
         const authInfo: BasicAuthResult | undefined = basicAuth(ctx.req) // 解析
         if (!authInfo || !authInfo.name) {
           throw new (global as any).errs.Forbbiden('token不合法')
@@ -30,7 +29,7 @@ export default class Auth {
 
         const { name: token } = authInfo
         const { uid, scope } = verifyToken(token)
-        if (!isInScope(scope, endpoint)) {
+        if (!isInScope(scope, this.endpoint)) {
           throw new (global as any).errs.Forbbiden('权限不足')
         }
         // 可传递给后续用
@@ -40,9 +39,15 @@ export default class Auth {
     }
   }
 
+  /**
+   * 视图函数的唯一标识: {路由版本}.{路由类别}+{函数名}
+   *             E.g: v1.classic+getLatest
+   *
+   * @returns
+   */
   static get endpoint() {
-    let [, routerVersion, routerCategory] = this.ctx.url.split('/')
-    let routerName = this.routerName
+    const [, routerVersion, routerCategory] = this.ctx.url.split('/')
+    const { routerName } = this
     return `${routerVersion}.${routerCategory}+${routerName}`
   }
 }

@@ -6,6 +6,7 @@ import BookModel from '../../model/book'
 import { AddShortCommentValidator, PositiveIntegerValidator, SearchValidator } from '../../validator'
 import HotBookModel from '../../model/hot-book'
 import CommentModel from '../../model/comment'
+import FavorModel from '../../model/favor'
 
 @api.controller('/v1/book')
 class BookController {
@@ -22,6 +23,10 @@ class BookController {
     throw new (global as any).errs.Success(book)
   }
 
+  /**
+   * 获取热门书籍列表
+   * @returns
+   */
   @api.get('/hot_list')
   async getHotBookList(ctx: RouterContext) {
     const bookList = await HotBookModel.getAll()
@@ -50,6 +55,7 @@ class BookController {
 
   /**
    * 添加书籍短评
+   * @returns
    */
   @api.post('/add/short_comment')
   @auth.login_required
@@ -64,7 +70,6 @@ class BookController {
     throw new (global as any).errs.Success()
   }
 
-
   /**
    * 获取书籍的所有短评
    * @param book_id {Number} 书籍ID
@@ -74,8 +79,8 @@ class BookController {
   @auth.login_required
   async getShortCommentList(ctx: RouterContext) {
     const validator = await new PositiveIntegerValidator().validate(ctx, {
-        id: 'book_id',
-      })
+      id: 'book_id',
+    })
     const book_id = validator.get('path.book_id')
     const commentList = await CommentModel.getShortCommentList(book_id)
     throw new (global as any).errs.Success({
@@ -84,24 +89,41 @@ class BookController {
     })
   }
 
+  /**
+   * 获取当前用户收藏的书籍数量
+   * @returns
+   */
   @api.get('/favor/count')
   @auth.login_required
   async getFavorBookCount(ctx: RouterContext) {
-    /**
-     * 获取当前用户收藏的书籍数量
-     */
     const count = await BookModel.getMyFavorBookCount((ctx as any).auth.uid)
     throw new (global as any).errs.Success({
       count,
     })
   }
 
+  /**
+   * 获取书籍的点赞情况和用户是否点赞
+   * @param book_id {Number} 书籍ID
+   * @returns
+   */
+  @api.get('/:book_id/favor')
+  @auth.login_required
+  async getBookFavor(ctx: RouterContext) {
+    const v = await new PositiveIntegerValidator().validate(ctx, {
+      id: 'book_id',
+    })
+    const favor = await FavorModel.getBookFavor(
+      (ctx as any).auth.uid, v.get('path.book_id'))
+    throw new (global as any).errs.Success(favor)
+  }
 
+  /**
+   * 热门书籍的关键字
+   * @returns 关键字列表
+   */
   @api.get('/hot_keyword')
   async getHotKeyword(ctx: RouterContext) {
-    /**
-     * 热门关键字
-     */
     throw new (global as any).errs.Success({
       'hot': ['Python',
         '哈利·波特',

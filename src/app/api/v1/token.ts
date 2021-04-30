@@ -6,8 +6,7 @@ import LoginVerifyService from '../../service/login-verify'
 import { api } from '../../../core/decorator'
 
 @api.controller('/v1/token')
-class ClassicController {
-
+class TokenController {
   /**
    * 获取token，实现登录(支持多种登录方式)
    * @param account {String} 账号

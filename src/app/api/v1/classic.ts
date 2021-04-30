@@ -122,4 +122,14 @@ class ClassicController {
     })
   }
 
+  /**
+   * 获取用户所有的收藏(非书籍)
+   * @returns
+   */
+  @api.get('/favor')
+  @auth.login_required
+  async getMyClassicFavors(ctx: RouterContext) {
+    const uid = (ctx as any).auth.uid
+    ctx.body = await FavorModel.getMyClassicFavors(uid)
+  }
 }

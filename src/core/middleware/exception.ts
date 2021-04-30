@@ -2,6 +2,11 @@ import { RouterContext } from 'koa-router'
 
 import { APIException, Success } from '../exception'
 
+/**
+ * 异常处理的中间件
+ * @param ctx {RouterContext} 上下文
+ * @param error {Error} 异常
+ */
 export const catchError = async (ctx: RouterContext, next: any) => {
   try {
     await next()
@@ -10,6 +15,11 @@ export const catchError = async (ctx: RouterContext, next: any) => {
   }
 }
 
+/**
+ * 异常处理逻辑
+ * @param ctx {RouterContext} 上下文
+ * @param error {Error} 异常
+ */
 function handleError(ctx: RouterContext, error: Error) {
   const isAPIException = error instanceof APIException
   const isDev = (global as any).config.environment === 'dev'
