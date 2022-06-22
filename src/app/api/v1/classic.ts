@@ -1,11 +1,10 @@
 import { RouterContext } from 'koa-router'
 
-import { PositiveIntegerValidator, ClassicValidator } from '../../validator'
-import { api, auth } from '../../../core/decorator'
-import FlowModel from '../../model/flow'
-import { ArtModel } from '../../model/art'
-import FavorModel from '../../model/favor'
-
+import { PositiveIntegerValidator, ClassicValidator } from '@app/validator'
+import FlowModel from '@app/model/flow'
+import { ArtModel } from '@app/model/art'
+import FavorModel from '@app/model/favor'
+import { api, auth } from '@core/decorator'
 
 @api.controller('/v1/classic')
 class ClassicController {
@@ -17,13 +16,13 @@ class ClassicController {
   @auth.login_required
   async getLatest(ctx: RouterContext) {
     const flow = await FlowModel.findOneOr404({
-      order: [
-        ['index', 'DESC'],
-      ],
+      order: [['index', 'DESC']],
     })
-    const art = await ArtModel.getData(flow.art_id, flow.type) as any
+    const art = (await ArtModel.getData(flow.art_id, flow.type)) as any
     const isLike = await FavorModel.isUserLike(
-      flow.art_id, flow.type, (ctx as any).auth.uid,
+      flow.art_id,
+      flow.type,
+      (ctx as any).auth.uid,
     )
     art.setDataValue('index', flow.index)
     art.setDataValue('like_status', isLike)
@@ -43,13 +42,17 @@ class ClassicController {
       id: 'index',
     })
     const index = validator.get('path.index')
-    const flow = await FlowModel.findOneOr404({
+    const flow = (await FlowModel.findOneOr404({
       where: {
         index: index + 1,
       },
-    }) as FlowModel
-    const art = await ArtModel.getData(flow.art_id, flow.type) as any
-    const isLike = await FavorModel.isUserLike(flow.art_id, flow.type, (ctx as any).auth.uid)
+    })) as FlowModel
+    const art = (await ArtModel.getData(flow.art_id, flow.type)) as any
+    const isLike = await FavorModel.isUserLike(
+      flow.art_id,
+      flow.type,
+      (ctx as any).auth.uid,
+    )
     art.setDataValue('index', flow.index)
     art.setDataValue('like_status', isLike)
 
@@ -68,13 +71,17 @@ class ClassicController {
       id: 'index',
     })
     const index = validator.get('path.index')
-    const flow = await FlowModel.findOneOr404({
+    const flow = (await FlowModel.findOneOr404({
       where: {
         index: index - 1,
       },
-    }) as FlowModel
-    const art = await ArtModel.getData(flow.art_id, flow.type) as any
-    const isLike = await FavorModel.isUserLike(flow.art_id, flow.type, (ctx as any).auth.uid)
+    })) as FlowModel
+    const art = (await ArtModel.getData(flow.art_id, flow.type)) as any
+    const isLike = await FavorModel.isUserLike(
+      flow.art_id,
+      flow.type,
+      (ctx as any).auth.uid,
+    )
     art.setDataValue('index', flow.index)
     art.setDataValue('like_status', isLike)
 
@@ -94,7 +101,9 @@ class ClassicController {
     const art_id = validator.get('path.id')
     const type = validator.get('path.type')
 
-    const artDetail = await new ArtModel(art_id, type).getDetail((ctx as any).auth.uid)
+    const artDetail = await new ArtModel(art_id, type).getDetail(
+      (ctx as any).auth.uid,
+    )
     throw new (global as any).errs.Success(artDetail)
   }
 
@@ -111,11 +120,15 @@ class ClassicController {
     const art_id = validator.get('path.id')
     const type = validator.get('path.type')
 
-    const art = await ArtModel.getData(art_id, type) as any
+    const art = (await ArtModel.getData(art_id, type)) as any
     if (!art) {
       throw new (global as any).errs.NotFound()
     }
-    const isLike = await FavorModel.isUserLike(art_id, type, (ctx as any).auth.uid)
+    const isLike = await FavorModel.isUserLike(
+      art_id,
+      type,
+      (ctx as any).auth.uid,
+    )
     throw new (global as any).errs.Success({
       fav_nums: art.fav_nums,
       like_status: isLike,

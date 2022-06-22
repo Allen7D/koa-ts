@@ -7,17 +7,10 @@
 
 import validator from 'validator'
 import { RouterContext } from 'koa-router'
-
-import {
-  ParameterException,
-} from './exception'
-
 import _ from 'lodash'
 
-import {
-  findMembers,
-} from './util'
-
+import { ParameterException } from '@core/exception'
+import { findMembers } from '@core/util'
 
 export class BaseValidator {
   public data: object // body中的参数
@@ -28,7 +21,6 @@ export class BaseValidator {
     this.data = {}
     this.parsed = {}
   }
-
 
   private _assembleAllParams(ctx: RouterContext) {
     return {
@@ -53,7 +45,6 @@ export class BaseValidator {
     }
   }
 
-
   private _findMembersFilter(key: any) {
     if (/validate([A-Z])\w+/g.test(key)) {
       return true
@@ -61,7 +52,7 @@ export class BaseValidator {
     // @ts-ignore
     if (this[key] instanceof Array) {
       // @ts-ignore
-      this[key].forEach(value => {
+      this[key].forEach((value) => {
         const isRuleType = value instanceof Rule
         if (!isRuleType) {
           throw new Error('验证数组必须全部为Rule类型')
@@ -102,14 +93,14 @@ export class BaseValidator {
 
   async _check(key: string, alias = {}) {
     // @ts-ignore
-    const isCustomFunc = typeof (this[key]) == 'function'
+    const isCustomFunc = typeof this[key] == 'function'
     let result
     if (isCustomFunc) {
       try {
         // @ts-ignore
         await this[key](this.data)
         result = new RuleResult(true)
-      } catch (error) {
+      } catch (error: any) {
         result = new RuleResult(false, error.msg || error.message || '参数错误')
       }
       // 函数验证
@@ -221,8 +212,7 @@ export class Rule {
   }
 
   validate(field: any) {
-    if (this.name == 'isOptional')
-      return new RuleResult(true)
+    if (this.name == 'isOptional') return new RuleResult(true)
     // @ts-ignore
     if (!validator[this.name](field + '', ...this.params)) {
       return new RuleResult(false, this.msg || '参数错误')

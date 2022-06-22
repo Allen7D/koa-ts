@@ -1,9 +1,9 @@
 const bcrypt = require('bcryptjs')
 import { Table, Column, DataType } from 'sequelize-typescript'
 
-import { BaseModel } from '../../core/db'
-import { ScopeTypeEnum } from '../lib/enum'
-import { WxToken } from '../service/wx-token'
+import { ScopeTypeEnum } from '@app/lib/enum'
+import { WxToken } from '@app/service/wx-token'
+import { BaseModel } from '@core/db'
 
 @Table({
   tableName: 'user',
@@ -15,6 +15,7 @@ export default class UserModel extends BaseModel<UserModel> {
     primaryKey: true, // 设置主键
     autoIncrement: true, // 自增加
   })
+  // @ts-ignore
   id!: number
 
   @Column({
@@ -85,17 +86,19 @@ export default class UserModel extends BaseModel<UserModel> {
    * @param password {String} 密码
    */
   static async verifyByEmail(email: string, password: string) {
-    const user: UserModel = await UserModel.findOneOr404({
-      where: {
-        email,
+    const user: UserModel = await UserModel.findOneOr404(
+      {
+        where: {
+          email,
+        },
       },
-    }, new (global as any).errs.AuthFailed('用户不存在'))
+      new (global as any).errs.AuthFailed('用户不存在'),
+    )
     user.checkPassword(password)
     return user
   }
 
   static async verifyByMiniProgram(code: string, ...args: string[]) {
-
     const wt = new WxToken(code)
     const openid = await wt.getOpenid()
     // 是否已注册
@@ -109,4 +112,3 @@ export default class UserModel extends BaseModel<UserModel> {
     return user
   }
 }
-

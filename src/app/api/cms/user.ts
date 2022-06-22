@@ -1,13 +1,12 @@
 import { RouterContext } from 'koa-router'
 
-import UserModel from '../../model/user'
-import { api, auth } from '../../../core/decorator'
-import { PositiveIntegerValidator } from '../../validator'
+import UserModel from '@app/model/user'
+import { PositiveIntegerValidator } from '@app/validator'
+import { api, auth } from '@core/decorator'
 
 @api.controller('/cms/user')
 class UserController {
-
-  /**
+  /**s
    * 查询用户信息
    * @param uid {Number} 用户ID
    * @returns 用户信息
@@ -21,8 +20,8 @@ class UserController {
     const uid = validator.get('path.uid')
     const user = await UserModel.findOne({
       where: {
-        id: uid
-      }
+        id: uid,
+      },
     })
     throw new (global as any).errs.Success(user)
   }

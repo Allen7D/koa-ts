@@ -1,8 +1,8 @@
 import { Table, Column, DataType } from 'sequelize-typescript'
-import { BaseModel } from '../../core/db'
-import FavorModel from './favor'
-import { ArtTypeEnum } from '../lib/enum'
 
+import FavorModel from '@app/model/favor'
+import { ArtTypeEnum } from '@app/lib/enum'
+import { BaseModel } from '@core/db'
 
 @Table({
   tableName: 'comment',
@@ -28,8 +28,7 @@ export default class CommentModel extends BaseModel<CommentModel> {
   })
   book_id!: number
 
-  keys(): void {
-  }
+  keys(): void {}
 
   static async addShortComment(bookID: number, content: string) {
     /**
@@ -69,6 +68,4 @@ export default class CommentModel extends BaseModel<CommentModel> {
     })
     return commentList
   }
-
-
 }

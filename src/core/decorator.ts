@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import Router, { IMiddleware } from 'koa-router'
 
-import Auth from './middleware/auth'
+import Auth from '@core/middleware/auth'
 
 /**
  * HTTP 请求方法
@@ -44,12 +44,17 @@ function controller(prefix: string) {
   })
   routerList.push(router)
 
-  return function(target: new (...args: any[]) => any) {
+  return function (target: new (...args: any[]) => any) {
     for (let propertyKey of Object.getOwnPropertyNames(target.prototype)) {
       // propertyKey包含constructor字段
       const path = Reflect.getMetadata('path', target.prototype, propertyKey)
-      const method: Methods = Reflect.getMetadata('method', target.prototype, propertyKey)
-      const middlewares: IMiddleware[] = Reflect.getMetadata('middlewares', target.prototype, propertyKey) || []
+      const method: Methods = Reflect.getMetadata(
+        'method',
+        target.prototype,
+        propertyKey,
+      )
+      const middlewares: IMiddleware[] =
+        Reflect.getMetadata('middlewares', target.prototype, propertyKey) || []
       const handler = target.prototype[propertyKey]
       if (path && handler) {
         if (middlewares && middlewares.length) {
@@ -71,8 +76,8 @@ function controller(prefix: string) {
  * @param {String} propertyKey  属性
  */
 function requestDecorator(type: Methods) {
-  return function(path: string) {
-    return function(target: any, propertyKey: string) {
+  return function (path: string) {
+    return function (target: any, propertyKey: string) {
       Reflect.defineMetadata('path', path, target, propertyKey) // 请求的路径
       Reflect.defineMetadata('method', type, target, propertyKey) // 请求的方法
     }
@@ -87,13 +92,18 @@ function requestDecorator(type: Methods) {
  * @param {String} propertyKey 属性
  */
 function middlewareDecorator(middleware: IMiddleware) {
-  return function(target: any, propertyKey: string) {
-    const originMiddlewares: IMiddleware[] = Reflect.getMetadata('middlewares', target, propertyKey) || []
+  return function (target: any, propertyKey: string) {
+    const originMiddlewares: IMiddleware[] =
+      Reflect.getMetadata('middlewares', target, propertyKey) || []
     originMiddlewares.push(middleware)
-    Reflect.defineMetadata('middlewares', originMiddlewares, target, propertyKey)
+    Reflect.defineMetadata(
+      'middlewares',
+      originMiddlewares,
+      target,
+      propertyKey,
+    )
   }
 }
-
 
 /**
  * 生成有属性的中间件装饰器(对应的wrapper函数必须有3层嵌套)
@@ -103,14 +113,19 @@ function middlewareDecorator(middleware: IMiddleware) {
  * @param {String} propertyKey 属性
  */
 function middlewareDecoratorWrapper(wrapper: (...args: any[]) => any) {
-  return function(target: any, propertyKey: string) {
-    const originMiddlewares: IMiddleware[] = Reflect.getMetadata('middlewares', target, propertyKey) || []
+  return function (target: any, propertyKey: string) {
+    const originMiddlewares: IMiddleware[] =
+      Reflect.getMetadata('middlewares', target, propertyKey) || []
     const middleware = wrapper(propertyKey)
     originMiddlewares.push(middleware)
-    Reflect.defineMetadata('middlewares', originMiddlewares, target, propertyKey)
+    Reflect.defineMetadata(
+      'middlewares',
+      originMiddlewares,
+      target,
+      propertyKey,
+    )
   }
 }
-
 
 export const api = {
   controller,

@@ -1,26 +1,28 @@
 const jwt = require('jsonwebtoken')
 
 interface DecodeToken {
-  uid: number        // 用户ID
-  scope: string      // 用户权限
-  create_at: number  // token创建时间
-  expire_in: number  // token有效期
+  uid: number // 用户ID
+  scope: string // 用户权限
+  create_at: number // token创建时间
+  expire_in: number // token有效期
 }
 
-export function findMembers(instance: any, {
-  prefix,
-  specifiedType,
-  filter,
-}: {
-  prefix?: any,
-  specifiedType?: any,
-  filter?: any
-}) {
+export function findMembers(
+  instance: any,
+  {
+    prefix,
+    specifiedType,
+    filter,
+  }: {
+    prefix?: any
+    specifiedType?: any
+    filter?: any
+  },
+) {
   // 递归函数
   function _find(instance: any): any {
     //基线条件（跳出递归）
-    if (instance.__proto__ === null)
-      return []
+    if (instance.__proto__ === null) return []
 
     let names = Reflect.ownKeys(instance)
     names = names.filter((name) => {
@@ -37,12 +39,8 @@ export function findMembers(instance: any, {
         return true
       }
     }
-    if (prefix)
-      if (value.startsWith(prefix))
-        return true
-    if (specifiedType)
-      if (instance[value] instanceof specifiedType)
-        return true
+    if (prefix) if (value.startsWith(prefix)) return true
+    if (specifiedType) if (instance[value] instanceof specifiedType) return true
   }
 
   return _find(instance)
@@ -56,12 +54,16 @@ export function findMembers(instance: any, {
  */
 export function generateToken(uid: number, scope: string): string {
   const { secretKey, expiresIn } = (global as any).config.security
-  const token = jwt.sign({
-    uid,
-    scope,
-  }, secretKey, {
-    expiresIn,
-  })
+  const token = jwt.sign(
+    {
+      uid,
+      scope,
+    },
+    secretKey,
+    {
+      expiresIn,
+    },
+  )
   return token
 }
 
@@ -74,9 +76,14 @@ export function verifyToken(token: string): DecodeToken {
   const { secretKey } = (global as any).config.security
   try {
     // 用户ID, 用户权限, 创建时间, 有效期
-    let { uid, scope, iat: create_at, exp: expire_in } = jwt.verify(token, secretKey)
+    let {
+      uid,
+      scope,
+      iat: create_at,
+      exp: expire_in,
+    } = jwt.verify(token, secretKey)
     return { uid, scope, create_at, expire_in }
-  } catch (error) {
+  } catch (error: any) {
     let errMsg = 'token 不合法'
     // token 不合法
     if (error.name === 'JsonWebTokenError') errMsg = 'token 不合法'

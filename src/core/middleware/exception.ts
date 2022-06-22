@@ -1,6 +1,6 @@
 import { RouterContext } from 'koa-router'
 
-import { APIException, Success } from '../exception'
+import { APIException, Success } from '@core/exception'
 
 /**
  * 异常处理的中间件
@@ -10,7 +10,7 @@ import { APIException, Success } from '../exception'
 export const catchError = async (ctx: RouterContext, next: any) => {
   try {
     await next()
-  } catch (error) {
+  } catch (error: any) {
     handleError(ctx, error)
   }
 }

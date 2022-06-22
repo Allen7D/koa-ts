@@ -1,10 +1,9 @@
 import Sequelize, { Op } from 'sequelize'
-
 import { Table, Column, DataType } from 'sequelize-typescript'
-import { BaseModel } from '../../core/db'
-import FavorModel from './favor'
-import { ArtTypeEnum } from '../lib/enum'
 
+import FavorModel from '@app/model/favor'
+import { ArtTypeEnum } from '@app/lib/enum'
+import { BaseModel } from '@core/db'
 
 @Table({
   tableName: 'hot-book',
@@ -35,8 +34,7 @@ export default class HotBookModel extends BaseModel<HotBookModel> {
   })
   title!: string
 
-  keys(): void {
-  }
+  keys(): void {}
 
   static async getAll() {
     /**
@@ -46,7 +44,7 @@ export default class HotBookModel extends BaseModel<HotBookModel> {
       order: ['index'],
     })
     const ids: Array<number> = []
-    bookList.forEach(book => ids.push(book.id))
+    bookList.forEach((book) => ids.push(book.id))
     const favorList: FavorModel[] = await FavorModel.findAll({
       where: {
         art_id: {
@@ -57,7 +55,7 @@ export default class HotBookModel extends BaseModel<HotBookModel> {
       group: ['art_id'],
       attributes: ['art_id', [Sequelize.fn('COUNT', '*'), 'count']],
     })
-    bookList.forEach(book => {
+    bookList.forEach((book) => {
       HotBookModel._getBookStatus(book, favorList)
     })
 
@@ -69,7 +67,7 @@ export default class HotBookModel extends BaseModel<HotBookModel> {
      * 获取书本的状态信息
      */
     let count = 0
-    favorList.forEach(favor => {
+    favorList.forEach((favor) => {
       if (book.id === favor.art_id) {
         count = favor.get('count') as number
       }

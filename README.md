@@ -15,8 +15,8 @@ QQ交流群:聊天、斗图、学习、交流，伸手党勿进
 
 <table align="center">
   <tr>
-    <td><img alt="img" src="https://github.com/Allen7D/mini-shop-server/blob/dev/media/qq_group_qr_code.jpg" width="250px"></td>
-    <td><img alt="img" src="https://github.com/Allen7D/mini-shop-server/blob/dev/media/qq_group_from_lin.png" width="250px"></td>
+    <td><img alt="img" src="https://s2.loli.net/2022/06/22/52j98eATnIFlVbz.jpg" width="250px"></td>
+    <td><img alt="img" src="https://s2.loli.net/2022/06/22/gZvrFKADzp4H7ej.png" width="250px"></td>
   </tr>
   <tr>
     <td>
@@ -77,7 +77,7 @@ SOURCE /aa/bb/cc/../island.sql;
 - 数据库的密码(database.password)
 - 小程序登录需填充小程序的ID和密钥(wx.appID，wx.appSecret)
 
-### 
+### 项目启动
 ```
 # 1. 安装依赖
 npm install
@@ -104,8 +104,8 @@ npm run dev
 │   └── util.ts
 ├── config              // 配置文件
 │   └── index.ts
-├── types               // Typescript自定义类型
-│   └── index.ts
+├── types               // Typescript 自定义类型
+│   └── global.d.ts
 └──  app
     ├── api
     │   ├── cms         // API接口(cms版本)
@@ -162,3 +162,39 @@ class BookController {
   }
 }
 ```
+
+## alias 配置
+参考 [Path aliases with TypeScript in Node.js](https://levelup.gitconnected.com/path-aliases-with-typescript-in-node-js-230803e3f200) 的设置，安装 `module-alias` 依赖到 package.json，将项目中 `src/app`、`src/core`、`src/config` 分别设置路径 alias（别名）
+
+在 tsconfig.json 中修改 `baseUrl` 和 `paths` 参数 
+```json
+{
+  "compilerOptions": {
+    ...
+    "baseUrl": "./src",
+    "paths": {                                
+      "@app/*": ["app/*"],
+      "@core/*": ["core/*"],
+      "@config/*": ["config/*"]
+    },
+    ...
+  }
+}
+```
+
+package.json 中增加 `_moduleAliases` 参数
+```json
+{
+  ...
+    "_moduleAliases": {
+    "@app": "src/app",
+    "@core": "src/core",
+    "@config": "src/config"
+  },
+  ...
+}
+```
+
+最后，在项目的入口文件 `app.ts` 的导入 `import 'module-alias/register'`，使得 `_moduleAliases` 配置生效。
+
+

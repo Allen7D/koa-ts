@@ -1,6 +1,7 @@
 import util from 'util'
-import axios, { AxiosResponse} from 'axios'
-import config from '../../config'
+import axios, { AxiosResponse } from 'axios'
+
+import config from '@config/index'
 
 const { appID, appSecret, loginUrl } = config.wx
 
@@ -31,9 +32,11 @@ export class WxToken {
    * @returns openid
    */
   private parseOutOpenid(result: AxiosResponse): string {
-    if (result.status !== 200) throw new (global as any).errs.AuthFailed('openid获取失败')
+    if (result.status !== 200)
+      throw new (global as any).errs.AuthFailed('openid获取失败')
     const { errcode, errmsg, openid } = result.data
-    if (errcode) throw new (global as any).errs.AuthFailed(`openid获取失败:${errmsg}`)
+    if (errcode)
+      throw new (global as any).errs.AuthFailed(`openid获取失败:${errmsg}`)
 
     return openid
   }

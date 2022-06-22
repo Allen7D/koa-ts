@@ -1,8 +1,10 @@
 const chalk = require('chalk')
 
+import 'module-alias/register' // 支持路径别名
 import Koa from 'koa'
-import config from './config'
-import InitManager from './core/init'
+
+import config from '@config/index'
+import InitManager from '@core/init'
 
 const app = new Koa()
 

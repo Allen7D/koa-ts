@@ -4,14 +4,13 @@
 import _ from 'lodash'
 import { Model } from 'sequelize-typescript'
 
-
 /**
  * Model模型JSON序列化
  */
 export abstract class BaseModel<T> extends Model<T> {
   protected fields: string[] = []
-  protected _locked = false  // ctrl(业务逻辑)层对字段hide和append的操作结束后，锁定
-  protected _lockedFields: string[] = []  // 在业务逻辑处理中，锁住的字段
+  protected _locked = false // ctrl(业务逻辑)层对字段hide和append的操作结束后，锁定
+  protected _lockedFields: string[] = [] // 在业务逻辑处理中，锁住的字段
   private _exclude = ['updated_at', 'created_at', 'deleted_at']
 
   abstract keys(): void
@@ -83,12 +82,12 @@ export abstract class BaseModel<T> extends Model<T> {
     let originFields = Object.keys(data) as string[] // 实例自身所的属性，包含created_at、updated_at、deleted_at等属性
     this.fields = _.clone(originFields)
 
-    this.hide(...this._exclude); // 隐藏默认隐藏参数；去掉created_at、updated_at、deleted_at等属性
+    this.hide(...this._exclude) // 隐藏默认隐藏参数；去掉created_at、updated_at、deleted_at等属性
 
     // 载入参数操作
     // 这一步是对this.fields的修正操作，对实例属性进行一系列添加和隐藏
     // E.g: 在this.fields中可能会增加created_at、updated_at、deleted_at等属性
-    (this as any).keys()
+    ;(this as any).keys()
 
     // 添加属性
     for (let key of this.fields) {
@@ -99,11 +98,10 @@ export abstract class BaseModel<T> extends Model<T> {
 
     // 隐藏属性
     originFields.forEach((key: string) => {
-        if (!this.fields.includes(key)) {
-          _.unset(data, key)
-        }
-      },
-    )
+      if (!this.fields.includes(key)) {
+        _.unset(data, key)
+      }
+    })
 
     return data
   }
@@ -116,7 +114,12 @@ export abstract class BaseModel<T> extends Model<T> {
    * @param errorCode
    * @param msg
    */
-  static async findOneOr404(options: any, e?: Error, errorCode?: number, msg?: string) {
+  static async findOneOr404(
+    options: any,
+    e?: Error,
+    errorCode?: number,
+    msg?: string,
+  ) {
     const result = await (this as any).findOne(options)
     if (!result) {
       if (e) throw e
@@ -133,7 +136,12 @@ export abstract class BaseModel<T> extends Model<T> {
    * @param errorCode
    * @param msg
    */
-  static async abortRepeat(options: any, e?: Error, errorCode?: number, msg?: string) {
+  static async abortRepeat(
+    options: any,
+    e?: Error,
+    errorCode?: number,
+    msg?: string,
+  ) {
     const result = await (this as any).findOne(options)
     if (!result) {
       if (e) throw e
@@ -141,5 +149,4 @@ export abstract class BaseModel<T> extends Model<T> {
     }
     return result
   }
-
 }

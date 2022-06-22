@@ -1,6 +1,6 @@
 import { Table, Column, DataType } from 'sequelize-typescript'
-import { BaseModel } from '../../core/db'
 
+import { BaseModel } from '@core/db'
 
 @Table({
   tableName: 'flow',
@@ -25,6 +25,5 @@ export default class FlowModel extends BaseModel<FlowModel> {
   })
   type!: number
 
-  keys(): void {
-  }
+  keys(): void {}
 }

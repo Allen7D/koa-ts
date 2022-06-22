@@ -1,8 +1,8 @@
 // 成功的errorCode的3种类型
 enum SuccessTypes {
-  GET,              // 获取成功
+  GET, // 获取成功
   CREATE_OR_UPDATE, // 创建 | 更新成功
-  DELETE            // 删除成功
+  DELETE, // 删除成功
 }
 
 // [常见的HTTP状态码](https://www.jianshu.com/p/369db1ba04ea)
@@ -15,12 +15,12 @@ export class APIException extends Error {
     super()
     // [在Typescript里extends Error的终极方案](https://zhuanlan.zhihu.com/p/113019880)
     if (typeof (Error as any).captureStackTrace === 'function') {
-      (Error as any).captureStackTrace(this, new.target)
+      ;(Error as any).captureStackTrace(this, new.target)
     }
     if (typeof Object.setPrototypeOf === 'function') {
       Object.setPrototypeOf(this, new.target.prototype)
     } else {
-      (this as any).__proto__ = new.target.prototype
+      ;(this as any).__proto__ = new.target.prototype
     }
 
     this.code = code // HTTP StatusCode
@@ -28,7 +28,6 @@ export class APIException extends Error {
     this.errorCode = errorCode
   }
 }
-
 
 // 请求成功
 export class Success extends APIException {

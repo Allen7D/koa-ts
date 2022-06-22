@@ -2,7 +2,8 @@
  * classic 包含music、sentence、movie
  */
 import { Table, Column, DataType } from 'sequelize-typescript'
-import { BaseModel } from '../../core/db'
+
+import { BaseModel } from '@core/db'
 
 abstract class ClassicModel<T> extends BaseModel<T> {
   @Column({
@@ -42,7 +43,6 @@ abstract class ClassicModel<T> extends BaseModel<T> {
   type!: number
 }
 
-
 @Table({
   tableName: 'music',
   comment: '音乐',
@@ -53,27 +53,21 @@ export class MusicModel extends ClassicModel<MusicModel> {
   })
   url!: string
 
-  keys(): void {
-  }
+  keys(): void {}
 }
-
 
 @Table({
   tableName: 'sentence',
   comment: '摘句',
 })
 export class SentenceModel extends ClassicModel<SentenceModel> {
-  keys(): void {
-  }
+  keys(): void {}
 }
-
 
 @Table({
   tableName: 'movie',
   comment: '影片',
 })
 export class MovieModel extends ClassicModel<MovieModel> {
-  keys(): void {
-  }
+  keys(): void {}
 }
-

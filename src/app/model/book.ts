@@ -1,10 +1,10 @@
 import axios from 'axios'
 import util from 'util'
 import { Table, Column, DataType } from 'sequelize-typescript'
-import { BaseModel } from '../../core/db'
-import FavorModel from './favor'
-import { ArtTypeEnum } from '../lib/enum'
 
+import FavorModel from '@app/model/favor'
+import { ArtTypeEnum } from '@app/lib/enum'
+import { BaseModel } from '@core/db'
 
 @Table({
   tableName: 'book',
@@ -15,7 +15,8 @@ export default class BookModel extends BaseModel<BookModel> {
     type: DataType.INTEGER,
     primaryKey: true,
   })
-  id!: number  // 感叹号是非null和非undefined的类型断言
+  // @ts-ignore
+  id!: number // 感叹号是非null和非undefined的类型断言
 
   @Column({
     type: DataType.INTEGER,
@@ -24,8 +25,7 @@ export default class BookModel extends BaseModel<BookModel> {
   })
   fav_nums!: number
 
-  keys(): void {
-  }
+  keys(): void {}
 
   /**
    * 通过「鱼书服务」获取书籍信息
@@ -44,9 +44,19 @@ export default class BookModel extends BaseModel<BookModel> {
    * @param count {Number} 获取数量(返回多少个)
    * @param summary
    */
-  static async searchFromYuShu(q: string, start: number, count: number, summary: number = 1) {
+  static async searchFromYuShu(
+    q: string,
+    start: number,
+    count: number,
+    summary: number = 1,
+  ) {
     const url = util.format(
-      (global as any).config.yushu.keywordUrl, encodeURI(q), count, start, summary) // encodeURI 对中文编码
+      (global as any).config.yushu.keywordUrl,
+      encodeURI(q),
+      count,
+      start,
+      summary,
+    ) // encodeURI 对中文编码
     const result = await axios.get(url)
     return result.data
   }
@@ -65,6 +75,4 @@ export default class BookModel extends BaseModel<BookModel> {
     })
     return count
   }
-
-
 }

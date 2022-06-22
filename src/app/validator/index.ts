@@ -1,15 +1,13 @@
-import { BaseValidator, Rule } from '../../core/base-validator'
-import UserModel from '../model/user'
-import { ClientTypeEnum, ArtTypeEnum, isThisType } from '../lib/enum'
+import UserModel from '@app/model/user'
+import { ClientTypeEnum, ArtTypeEnum, isThisType } from '@app/lib/enum'
+import { BaseValidator, Rule } from '@core/base-validator'
 
 export class PositiveIntegerValidator extends BaseValidator {
   public id: Rule[]
 
   constructor() {
     super()
-    this.id = [
-      new Rule('isInt', '需要是正整数', { min: 1 }),
-    ]
+    this.id = [new Rule('isInt', '需要是正整数', { min: 1 })]
   }
 }
 
@@ -21,9 +19,7 @@ export class RegisterValidator extends BaseValidator {
 
   constructor() {
     super()
-    this.email = [
-      new Rule('isEmail', '不符合Email规范'),
-    ]
+    this.email = [new Rule('isEmail', '不符合Email规范')]
     this.nickname = [
       new Rule('isLength', '昵称不符合长度规范', {
         min: 4,
@@ -35,7 +31,11 @@ export class RegisterValidator extends BaseValidator {
         min: 6,
         max: 32,
       }),
-      new Rule('matches', '密码不符合规范', '^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]'),
+      new Rule(
+        'matches',
+        '密码不符合规范',
+        '^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]',
+      ),
     ]
     this.password2 = this.password1
   }
@@ -77,9 +77,7 @@ export class LoginValidator extends BaseValidator {
       }),
     ]
     // 如果是字符串数字，不会校验，且会自动转为number类型
-    this.type = [
-      new Rule('isInt', '请输入数字'),
-    ]
+    this.type = [new Rule('isInt', '请输入数字')]
   }
 
   validateType(vals: any) {
@@ -94,12 +92,9 @@ export class TokenValidator extends BaseValidator {
 
   constructor() {
     super()
-    this.token = [
-      new Rule('isLength', '不为空', { min: 1 }),
-    ]
+    this.token = [new Rule('isLength', '不为空', { min: 1 })]
   }
 }
-
 
 function checkArtType(vals: any) {
   // 同时支持body和path，不推荐这么用
@@ -122,9 +117,7 @@ export class LikeValidator extends PositiveIntegerValidator {
   }
 }
 
-export class ClassicValidator extends LikeValidator {
-}
-
+export class ClassicValidator extends LikeValidator {}
 
 export class SearchValidator extends BaseValidator {
   public q: Rule[]

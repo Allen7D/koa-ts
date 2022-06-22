@@ -1,8 +1,8 @@
 import { RouterContext } from 'koa-router'
 
-import UserModel from '../../model/user'
-import { RegisterValidator } from '../../validator'
-import { api, auth } from '../../../core/decorator'
+import UserModel from '@app/model/user'
+import { RegisterValidator } from '@app/validator'
+import { api, auth } from '@core/decorator'
 
 @api.controller('/v1/user')
 class UserController {
@@ -16,8 +16,8 @@ class UserController {
     const { uid } = (ctx as any).auth
     const user = await UserModel.findOne({
       where: {
-        id: uid
-      }
+        id: uid,
+      },
     })
     throw new (global as any).errs.Success(user)
   }
@@ -35,10 +35,11 @@ class UserController {
     const validator = await new RegisterValidator().validate(ctx)
     const { email, nickname, password1: password } = validator.get('body')
     const user: UserModel = await UserModel.create({
-      email, nickname, password
+      email,
+      nickname,
+      password,
     } as UserModel)
 
     throw new (global as any).errs.Success(user)
   }
 }
-

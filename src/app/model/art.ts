@@ -1,9 +1,9 @@
 import _ from 'lodash'
 import { Op } from 'sequelize'
 
-import { ArtTypeEnum } from '../lib/enum'
-import { MovieModel, MusicModel, SentenceModel } from './classic'
-import BookModel from './book'
+import { MovieModel, MusicModel, SentenceModel } from '@app/model/classic'
+import BookModel from '@app/model/book'
+import { ArtTypeEnum } from '@app/lib/enum'
 
 export class ArtCollection {
   /**
@@ -39,7 +39,10 @@ export class ArtCollection {
    * @param type
    * @private
    */
-  private static async _getListByType(ids: number[], type: number): Promise<any[]> {
+  private static async _getListByType(
+    ids: number[],
+    type: number,
+  ): Promise<any[]> {
     let artList: any[] = []
     const options = {
       where: {
@@ -68,14 +71,12 @@ export class ArtCollection {
   }
 }
 
-
 export class ArtModel {
-  constructor(private art_id: number, private type: number) {
-  }
+  constructor(private art_id: number, private type: number) {}
 
   async getDetail(uid: number) {
     const FavorModel = require('./favor').default // 解决循环引用
-    const art = await ArtModel.getData(this.art_id, this.type) as any
+    const art = (await ArtModel.getData(this.art_id, this.type)) as any
     if (!art) {
       throw new (global as any).errs.NotFound()
     }

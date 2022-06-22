@@ -1,9 +1,9 @@
 import Router, { RouterContext } from 'koa-router'
 
-import { LoginValidator, TokenValidator } from '../../validator'
-import { verifyToken } from '../../../core/util'
-import LoginVerifyService from '../../service/login-verify'
-import { api } from '../../../core/decorator'
+import { LoginValidator, TokenValidator } from '@app/validator'
+import LoginVerifyService from '@app/service/login-verify'
+import { verifyToken } from '@core/util'
+import { api } from '@core/decorator'
 
 @api.controller('/v1/token')
 class TokenController {
@@ -17,8 +17,11 @@ class TokenController {
   @api.post('/')
   async getToken(ctx: RouterContext) {
     const validator = await new LoginValidator().validate(ctx)
-    const { account, secret, type }:
-      { account: string, secret: string, type: number } = validator.get('body')
+    const {
+      account,
+      secret,
+      type,
+    }: { account: string; secret: string; type: number } = validator.get('body')
     const token = await LoginVerifyService.getToken(account, secret, type)
     throw new (global as any).errs.Success({ token })
   }

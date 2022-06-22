@@ -1,12 +1,16 @@
 import { RouterContext } from 'koa-router'
 import { Next } from 'koa'
 
-import { api, auth } from '../../../core/decorator'
-import BookModel from '../../model/book'
-import { AddShortCommentValidator, PositiveIntegerValidator, SearchValidator } from '../../validator'
-import HotBookModel from '../../model/hot-book'
-import CommentModel from '../../model/comment'
-import FavorModel from '../../model/favor'
+import BookModel from '@app/model/book'
+import {
+  AddShortCommentValidator,
+  PositiveIntegerValidator,
+  SearchValidator,
+} from '@app/validator'
+import HotBookModel from '@app/model/hot-book'
+import CommentModel from '@app/model/comment'
+import FavorModel from '@app/model/favor'
+import { api, auth } from '@core/decorator'
 
 @api.controller('/v1/book')
 class BookController {
@@ -114,7 +118,9 @@ class BookController {
       id: 'book_id',
     })
     const favor = await FavorModel.getBookFavor(
-      (ctx as any).auth.uid, v.get('path.book_id'))
+      (ctx as any).auth.uid,
+      v.get('path.book_id'),
+    )
     throw new (global as any).errs.Success(favor)
   }
 
@@ -125,7 +131,8 @@ class BookController {
   @api.get('/hot_keyword')
   async getHotKeyword(ctx: RouterContext) {
     throw new (global as any).errs.Success({
-      'hot': ['Python',
+      hot: [
+        'Python',
         '哈利·波特',
         '村上春树',
         '东野圭吾',
@@ -136,6 +143,4 @@ class BookController {
       ],
     })
   }
-
 }
-

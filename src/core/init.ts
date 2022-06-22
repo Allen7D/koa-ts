@@ -5,8 +5,7 @@ import Koa from 'Koa'
 import parser from 'koa-bodyparser'
 import { Sequelize } from 'sequelize-typescript'
 
-import { catchError } from './middleware/exception'
-
+import { catchError } from '@core/middleware/exception'
 
 class InitManager {
   public static app: Koa
@@ -32,8 +31,8 @@ class InitManager {
   }
 
   static loadConfig(path = '') {
-    const configPath = path || `${process.cwd()}/src/config`;
-    (global as any).config = require(configPath).default
+    const configPath = path || `${process.cwd()}/src/config`
+    ;(global as any).config = require(configPath).default
   }
 
   /**
@@ -43,25 +42,26 @@ class InitManager {
    */
   static initLoadRouters(...routerPathList: string[]) {
     // 载入
-    routerPathList.forEach(routerPath => {
-      fs.readdirSync(`${process.cwd()}/${routerPath}`)
-        .forEach((file: string) => {
-          if ((file.indexOf('.') !== 0) && (file.slice(-3) === '.ts')) {
+    routerPathList.forEach((routerPath) => {
+      fs.readdirSync(`${process.cwd()}/${routerPath}`).forEach(
+        (file: string) => {
+          if (file.indexOf('.') !== 0 && file.slice(-3) === '.ts') {
             const filePath = path.join(`${process.cwd()}/${routerPath}`, file)
             require(filePath)
           }
-        })
+        },
+      )
     })
     const { routerList } = require('./decorator')
     // @ts-ignore
-    routerList.forEach(router => this.app.use(router.routes()))
+    routerList.forEach((router) => this.app.use(router.routes()))
   }
 
   /**
    *  载入所有自定义异常
    */
   static handleError() {
-    (global as any).errs = require('./exception')
+    ;(global as any).errs = require('./exception')
     this.app.use(catchError)
   }
 
@@ -71,13 +71,19 @@ class InitManager {
   static async connectDB() {
     const UserModel = require('../app/model/book').default
     const BookModel = require('../app/model/user').default
-    const { MusicModel, SentenceModel, MovieModel } = require('../app/model/classic')
+    const {
+      MusicModel,
+      SentenceModel,
+      MovieModel,
+    } = require('../app/model/classic')
     const FavorModel = require('../app/model/favor').default
     const FlowModel = require('../app/model/flow').default
     const HotBookModel = require('../app/model/hot-book').default
     const CommentModel = require('../app/model/comment').default
 
-    const { dbName, host, port, username, password, force, logging } = (global as any).config.database
+    const { dbName, host, port, username, password, force, logging } = (
+      global as any
+    ).config.database
     const sequelize = new Sequelize(dbName, username, password, {
       dialect: 'mysql',
       host,
@@ -94,8 +100,14 @@ class InitManager {
       },
       models: [
         UserModel,
-        BookModel, MusicModel, SentenceModel, MovieModel,
-        FavorModel, FlowModel, HotBookModel, CommentModel,
+        BookModel,
+        MusicModel,
+        SentenceModel,
+        MovieModel,
+        FavorModel,
+        FlowModel,
+        HotBookModel,
+        CommentModel,
       ],
     })
     await sequelize.sync({

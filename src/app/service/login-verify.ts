@@ -1,9 +1,13 @@
-import { ClientTypeEnum } from '../lib/enum'
-import UserModel from '../model/user'
-import { generateToken } from '../../core/util'
+import UserModel from '@app/model/user'
+import { ClientTypeEnum } from '@app/lib/enum'
+import { generateToken } from '@core/util'
 
 export default class LoginVerifyService {
-  static async getToken(account: string, secret: string, type: number): Promise<string> {
+  static async getToken(
+    account: string,
+    secret: string,
+    type: number,
+  ): Promise<string> {
     /**
      * 生成token
      * @param account {String} 账号

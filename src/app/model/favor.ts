@@ -1,9 +1,9 @@
 import { Sequelize, Table, Column, DataType } from 'sequelize-typescript'
 import { Op } from 'sequelize'
-import { BaseModel } from '../../core/db'
-import { ArtTypeEnum } from '../lib/enum'
-import { ArtCollection } from './art'
 
+import { ArtCollection } from '@app/model/art'
+import { ArtTypeEnum } from '@app/lib/enum'
+import { BaseModel } from '@core/db'
 
 @Table({
   tableName: 'favor',
@@ -27,8 +27,7 @@ export default class FavorModel extends BaseModel<FavorModel> {
   })
   type!: number
 
-  keys(): void {
-  }
+  keys(): void {}
 
   static async confirm(art_id: number, type: number, uid: number) {
     /**
@@ -59,7 +58,11 @@ export default class FavorModel extends BaseModel<FavorModel> {
   /**
    * 是否用户喜欢
    */
-  static async isUserLike(art_id: number, type: number, uid: number): Promise<boolean> {
+  static async isUserLike(
+    art_id: number,
+    type: number,
+    uid: number,
+  ): Promise<boolean> {
     const favor = await FavorModel.findOne({
       where: {
         art_id,
@@ -112,5 +115,4 @@ export default class FavorModel extends BaseModel<FavorModel> {
       like_status: favor ? true : false,
     }
   }
-
 }

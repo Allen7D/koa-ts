@@ -2,14 +2,13 @@ import Router, { IMiddleware, RouterContext } from 'koa-router'
 import { Next } from 'koa'
 import basicAuth, { BasicAuthResult } from 'basic-auth'
 
-import { verifyToken } from '../util'
-import { isInScope } from '../../app/lib/scope'
+import { isInScope } from '@app/lib/scope'
+import { verifyToken } from '@core/util'
 
 export default class Auth {
   // 设置属性
   private static ctx: Router.RouterContext
   private static routerName: string
-
 
   /**
    * 权限校验
@@ -33,7 +32,7 @@ export default class Auth {
           throw new (global as any).errs.Forbbiden('权限不足')
         }
         // 可传递给后续用
-        (ctx as any).auth = { uid, scope }
+        ;(ctx as any).auth = { uid, scope }
         await next()
       }
     }
@@ -51,4 +50,3 @@ export default class Auth {
     return `${routerVersion}.${routerCategory}+${routerName}`
   }
 }
-
